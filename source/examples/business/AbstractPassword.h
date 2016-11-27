@@ -1,4 +1,5 @@
 #pragma once
+#include "BusinessTable.h"
 #include "BusinessColumnTypes.h"
 
 

@@ -1,5 +1,7 @@
 #pragma once
- #include "BusinessColumnTypes.h"
+#include "BusinessTable.h"
+#include "BusinessColumnTypes.h"
+
 //#include "temp.h"
 
 

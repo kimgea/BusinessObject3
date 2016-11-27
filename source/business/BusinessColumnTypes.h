@@ -1,5 +1,4 @@
 #pragma once
-
 #include "BusinessColumn.h"
 
 
@@ -9,14 +8,19 @@
 *		Base Columns types - usable
 *
 **************************************************************/
-
-class CharColumn : public BusinessColumnBase<std::string>
+/*
+	TODO:
+		- Make naming optional
+*/
+class CharColumn : public BusinessColumnTypeBase<std::string>
 {
 protected:
 	unsigned int _maxSize;
 
+	std::string SqlCreatePart();
+
 public:
-	CharColumn() : BusinessColumnBase<std::string>() {}
+	CharColumn() : BusinessColumnTypeBase<std::string>() {}
 
 	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize);
 	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue);
@@ -29,7 +33,7 @@ public:
 	std::string ToString() const;
 
 
-	std::string SqlCreatePart();
+	
 };
 
 

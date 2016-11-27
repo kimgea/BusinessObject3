@@ -12,18 +12,18 @@
 
 void CharColumn::Init(BusinessObjectBase * obj, std::string columnName, unsigned int MaxSize)
 {
-	BusinessColumnBase<std::string>::Init(obj, columnName);
+	BusinessColumnBase::Init(obj, columnName);
 	_maxSize = MaxSize;
 }
 void CharColumn::Init(BusinessObjectBase * obj, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue)
 {
-	BusinessColumnBase<std::string>::Init(obj, columnName, notNull, defaultValue);
+	BusinessColumnTypeBase<std::string>::Init(obj, columnName, notNull, defaultValue);
 	_maxSize = MaxSize;
 }
 
 CharColumn & CharColumn::operator=(const std::string & value)
 {
-	BusinessColumnBase<std::string>::operator=(value);
+	BusinessColumnTypeBase<std::string>::operator=(value);
 	return *this;
 }
 
@@ -46,11 +46,12 @@ std::string CharColumn::SqlCreatePart()
 
 std::string CharColumn::ToString() const
 {
-	if (_value.size() > 0)
+	return _value;
+	/*if (_value.size() > 0)
 		return _value;
 	else if (_default.size() > 0)
 		return _default;
-	return "";
+	return "";*/
 }
 
 
