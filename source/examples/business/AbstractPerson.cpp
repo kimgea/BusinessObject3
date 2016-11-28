@@ -4,10 +4,11 @@
 
 AbstractPerson::AbstractPerson()
 {
-	//_tableName = "abstractPerson";	// NB: temp. should not be set in abstract
 	
-	FirstName.Init(this, "first_name", 30);
-	LastName.Init(this, "last_name", 30);		
+	// TODO: ?? Do not init in abstract classes, do it from concreat table mapped classes instead. 
+	//			Thath way it will be more flexible in case of different column requirments.
+	CharColumnMake(this, FirstName, "first_name", 30);
+	CharColumnMake(this, LastName, "last_name", 30);
 }
 
 

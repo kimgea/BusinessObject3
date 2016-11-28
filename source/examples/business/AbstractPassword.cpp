@@ -4,8 +4,7 @@
 
 AbstractPassword::AbstractPassword()
 {
-	Password.Init(this, "password", 30, true, "********");
-	PasswordHint.Init(this, "last_name", 30, true, "");
-	PasswordSalt.Init(this, "last_name", 30, true, "");	
-
+	CharColumnMake(this, Password, "password", 30, true, "********");
+	CharColumnMake(this, PasswordHint, "password_hint", 30, true, "");
+	CharColumnMake(this, PasswordSalt, "salt", 30, true, "");
 }

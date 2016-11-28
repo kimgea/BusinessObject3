@@ -10,6 +10,16 @@
 *
 **************************************************************/
 
+void CharColumnMake(BusinessObjectBase * obj, CharColumn &column, std::string columnName, unsigned int MaxSize)
+{
+	column.Init(obj, columnName, MaxSize);
+}
+void CharColumnMake(BusinessObjectBase * obj, CharColumn &column, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue)
+{
+	column.Init(obj, columnName, MaxSize, notNull, defaultValue);
+}
+/**********************************************/
+
 void CharColumn::Init(BusinessObjectBase * obj, std::string columnName, unsigned int MaxSize)
 {
 	BusinessColumnBase::Init(obj, columnName);
@@ -38,7 +48,7 @@ std::string CharColumn::SqlCreatePart()
 
 	if (_notNull)
 	{
-		sql += "NOT NULL DEFAULT '" + _default + "'";
+		sql += " NOT NULL DEFAULT '" + _default + "'";
 	}
 
 	return sql;

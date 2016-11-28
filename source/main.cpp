@@ -23,7 +23,7 @@ int main()
 
 	//AbstractPerson aPerson;
 	//aPerson = person;
-
+	
 	std::string pw = person.Password;
 	std::string fullName = person.FullName();
 	std::string sql = person.Create();

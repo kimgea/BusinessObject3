@@ -2,6 +2,19 @@
 #include "BusinessObject.h"
 
 
+
+KeyBuilderBase::KeyBuilderBase()
+{
+}
+
+void KeyBuilderBase::AddColumn(BusinessColumnBase * column)
+{
+	_columns.push_back(column);
+}
+
+
+/*******************************************************************/
+
 void PrimaryKeyConstraint(BusinessObjectBase * obj, BusinessColumnBase * column)
 {
 	PrimaryKeyBuilder builder;
@@ -41,11 +54,6 @@ PrimaryKeyBuilder::PrimaryKeyBuilder()
 {
 }
 
-void PrimaryKeyBuilder::AddColumn(BusinessColumnBase * column)
-{
-	_columns.push_back(column);
-}
-
 void PrimaryKeyBuilder::Build(BusinessObjectBase *obj, std::string name)
 {
 	//std::shared_ptr<PrimaryKey> pk(new PrimaryKey);
@@ -58,9 +66,28 @@ void PrimaryKeyBuilder::Build(BusinessObjectBase *obj, std::string name)
 }
 void PrimaryKeyBuilder::Build(BusinessObjectBase *obj)
 {
-	
+
 	PrimaryKeyBuilder::Build(obj, "");
 }
+
+/*******************************************************************/
+
+/*******************************************************************/
+
+ForeignKeyBuilder::ForeignKeyBuilder()
+{
+}
+
+void ForeignKeyBuilder::Build(BusinessObjectBase *obj, std::string name)
+{
+	
+}
+void ForeignKeyBuilder::Build(BusinessObjectBase *obj)
+{
+
+	ForeignKeyBuilder::Build(obj, "");
+}
+
 /************************************************************************
 *
 ************************************************************************/
@@ -84,6 +111,15 @@ std::string PrimaryKey::SqlCreatePart()
 	}
 	primary_columns.pop_back();
 	return "CONSTRAINT " + _key_name + " PRIMARY KEY (" + primary_columns + ")";
+}
+
+
+
+/*******************************************************************/
+
+std::string ForeignKey::SqlCreatePart()
+{
+	return std::string();
 }
 
 /************************************************************************

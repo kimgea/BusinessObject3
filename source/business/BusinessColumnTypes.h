@@ -17,13 +17,15 @@ class CharColumn : public BusinessColumnTypeBase<std::string>
 protected:
 	unsigned int _maxSize;
 
+	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize);
+	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue);
+
 	std::string SqlCreatePart();
 
 public:
 	CharColumn() : BusinessColumnTypeBase<std::string>() {}
 
-	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize);
-	void Init(BusinessObjectBase *obj, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue);
+	
 
 	// TODO: Is it possible to avoid adding this line all column types?
 	CharColumn& operator=(const std::string &value);
@@ -34,6 +36,8 @@ public:
 
 
 	
+	friend void  CharColumnMake(BusinessObjectBase *obj, CharColumn &column, std::string columnName, unsigned int MaxSize);
+	friend void  CharColumnMake(BusinessObjectBase *obj, CharColumn &column, std::string columnName, unsigned int MaxSize, bool notNull, std::string defaultValue);
 };
 
 

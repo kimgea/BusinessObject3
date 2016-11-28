@@ -91,12 +91,12 @@ protected:
 	bool _notNull;
 	bool _hasValue;
 
+	void Init(BusinessObjectBase *obj, std::string columnName);
+
 	virtual std::string SqlCreatePart();
 
 public:
-	BusinessColumnBase();	
-
-	void Init(BusinessObjectBase *obj, std::string columnName);
+	BusinessColumnBase();		
 
 	virtual std::string ToString() const;	
 	
@@ -106,7 +106,6 @@ public:
 
 	bool HasValue();
 	
-
 };
 
 
@@ -120,7 +119,7 @@ public:
 *
 ************************************************************************/
 
-class PrimaryKey 
+class KeyBase
 {
 	friend class PrimaryKeyBuilder;
 	friend class BusinessObjectBase;
@@ -130,6 +129,21 @@ protected:
 	std::string _key_name;
 	Columns  _columns;
 
+	virtual std::string SqlCreatePart() { return std::string(); }
+
+public:
+	KeyBase() {}
+	virtual ~KeyBase() {}
+};
+
+/************************************************************************/
+
+class PrimaryKey : public KeyBase
+{
+	friend class PrimaryKeyBuilder;
+	friend class BusinessObjectBase;
+
+protected:
 	std::string SqlCreatePart();
 	
 public:
@@ -139,17 +153,13 @@ public:
 
 /************************************************************************/
 
-class ForeignKey
+class ForeignKey : public KeyBase
 {
-	friend class PrimaryKeyBuilder;
+	//friend class PrimaryKeyBuilder;
 	friend class BusinessObjectBase;
 
 protected:
-	BusinessObjectBase *_obj;
-	std::string _key_name;
-	//Columns  _columns;
-
-	//std::string SqlCreatePart();
+	std::string SqlCreatePart();
 
 public:
 	ForeignKey() {}
@@ -164,6 +174,23 @@ public:
 *
 *
 ************************************************************************/
+
+
+class KeyBuilderBase
+{
+protected:
+	Columns  _columns;
+
+public:
+	KeyBuilderBase();
+
+	void AddColumn(BusinessColumnBase * column);
+
+	virtual void Build(BusinessObjectBase *obj) = 0;
+	virtual void Build(BusinessObjectBase *obj, std::string name) = 0;
+};
+
+/************************************************************************/
 
 void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase * column);
 void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase * column, std::string name);
@@ -174,18 +201,13 @@ void PrimaryKeyConstraint(BusinessObjectBase *obj,
 	BusinessColumnBase * column1, BusinessColumnBase * column2, 
 	std::string name);
 
-class PrimaryKeyBuilder
+class PrimaryKeyBuilder : public KeyBuilderBase
 {
 	friend class PrimaryKey;
 	friend class BusinessObjectBase;
-
-protected:
-	Columns  _columns;
-
+	
 public:
 	PrimaryKeyBuilder();
-
-	void AddColumn(BusinessColumnBase * column);
 
 	void Build(BusinessObjectBase *obj);
 	void Build(BusinessObjectBase *obj, std::string name);
@@ -193,18 +215,25 @@ public:
 
 /************************************************************************/
 
-/*class ForeignKeyBuilder
+class ForeignKeyBuilder : public KeyBuilderBase
 {
-	//friend class PrimaryKeyBuilder;
+	friend class ForeignKey;
 	friend class BusinessObjectBase;
 
-protected:
-	BusinessObjectBase *_obj;
-	std::string _key_name;
-	//Columns  _columns;
-
-	//std::string SqlCreatePart();
-
 public:
-	ForeignKey() {}
-};*/
+	ForeignKeyBuilder();
+
+	void Build(BusinessObjectBase *obj);
+	void Build(BusinessObjectBase *obj, std::string name);
+};
+
+
+/************************************************************************
+*
+*
+*
+*
+*
+*
+*
+************************************************************************/

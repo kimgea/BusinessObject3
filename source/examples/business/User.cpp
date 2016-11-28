@@ -5,7 +5,7 @@
 User::User()
 {
 	_tableName = "user";
-	UserName.Init(this, "last_name", 30);
+	CharColumnMake(this, UserName, "last_name", 30);
 
 	PrimaryKeyConstraint(this, &UserName, _tableName + "_PK1");
 	PrimaryKeyConstraint(this, &FirstName, &LastName, _tableName + "_PK1");

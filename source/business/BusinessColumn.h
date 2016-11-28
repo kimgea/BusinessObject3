@@ -16,18 +16,19 @@ protected:
 	VALUE _value;
 	//std::vector<VALUE> _values; // 
 
-
-public:
-	BusinessColumnTypeBase() : BusinessColumnBase()
-	{
-	}
-
 	void Init(BusinessObjectBase *obj, std::string columnName, bool notNull, VALUE defaultValue)
 	{
 		_notNull = notNull;
 		_default = defaultValue;
 		BusinessColumnBase::Init(obj, columnName);
 	}
+
+public:
+	BusinessColumnTypeBase() : BusinessColumnBase()
+	{
+	}
+
+	
 	
 	/*BusinessColumnTypeBase<VALUE>& operator=(const BusinessColumnTypeBase<VALUE> &rhs)
 	{
