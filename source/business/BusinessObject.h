@@ -6,6 +6,7 @@
 class ForeignKey;
 class PrimaryKey;
 class PrimaryKeyBuilder;
+class ForeignKeyBuilder;
 class BusinessColumnBase;
 
 
@@ -25,7 +26,7 @@ typedef ForeignKeys::iterator ForeignKeyItr;
 *
 *
 *
-*
+*		Table
 *
 *
 *
@@ -34,6 +35,7 @@ typedef ForeignKeys::iterator ForeignKeyItr;
 class BusinessObjectBase 
 {
 	friend class PrimaryKeyBuilder;
+	friend class ForeignKeyBuilder;
 	friend class BusinessColumnBase;
 	
 private:
@@ -44,7 +46,8 @@ private:
 protected:	
 	std::string _tableName;	
 		
-	void AddPrimaryKey(PrimaryKey *primary_key);
+	void AddPrimaryKey(std::unique_ptr<PrimaryKey> &&primary_key);
+	void AddForeignKey(std::unique_ptr<ForeignKey> &&foreign_key);
 	void AddColumn(BusinessColumnBase *column);
 
 public:
@@ -74,8 +77,8 @@ public:
 *
 *
 *
-*
-*
+*			Column
+*		
 *
 *
 ************************************************************************/
@@ -113,7 +116,7 @@ public:
 *
 *
 *
-*
+*		KEYS  (Primary and Foreign)
 *
 *
 *
@@ -121,7 +124,6 @@ public:
 
 class KeyBase
 {
-	friend class PrimaryKeyBuilder;
 	friend class BusinessObjectBase;
 
 protected:
@@ -136,7 +138,9 @@ public:
 	virtual ~KeyBase() {}
 };
 
-/************************************************************************/
+/************************************************************************
+*			PrimaryKey
+************************************************************************/
 
 class PrimaryKey : public KeyBase
 {
@@ -151,14 +155,18 @@ public:
 };
 
 
-/************************************************************************/
+/************************************************************************
+*			ForeignKey
+************************************************************************/
 
 class ForeignKey : public KeyBase
 {
-	//friend class PrimaryKeyBuilder;
+	friend class ForeignKeyBuilder;
 	friend class BusinessObjectBase;
 
 protected:
+	Columns  _reference_columns;
+
 	std::string SqlCreatePart();
 
 public:
@@ -169,7 +177,7 @@ public:
 *
 *
 *
-*
+*			KEY BUILDERS
 *
 *
 *
@@ -190,16 +198,20 @@ public:
 	virtual void Build(BusinessObjectBase *obj, std::string name) = 0;
 };
 
-/************************************************************************/
+/************************************************************************
+*			PrimaryKeyBuilder - PrimaryKeyConstraint
+************************************************************************/
 
-void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase * column);
-void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase * column, std::string name);
+void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column);
+void PrimaryKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column, std::string name);
 
 void PrimaryKeyConstraint(BusinessObjectBase *obj,
-	BusinessColumnBase * column1, BusinessColumnBase * column2);
+	BusinessColumnBase &column1, BusinessColumnBase &column2);
 void PrimaryKeyConstraint(BusinessObjectBase *obj,
-	BusinessColumnBase * column1, BusinessColumnBase * column2, 
+	BusinessColumnBase &column1, BusinessColumnBase &column2, 
 	std::string name);
+
+/*******************************************************************/
 
 class PrimaryKeyBuilder : public KeyBuilderBase
 {
@@ -213,7 +225,17 @@ public:
 	void Build(BusinessObjectBase *obj, std::string name);
 };
 
-/************************************************************************/
+/************************************************************************
+*			ForeignKeyBuilder - ForeignKeyConstraint
+************************************************************************/
+
+/*void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column);
+void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column, std::string name);
+void ForeignKeyConstraint(BusinessObjectBase *obj,
+	BusinessColumnBase &column1, BusinessColumnBase &column2);
+void ForeignKeyConstraint(BusinessObjectBase *obj,
+	BusinessColumnBase &column1, BusinessColumnBase &column2,
+	std::string name);*/
 
 class ForeignKeyBuilder : public KeyBuilderBase
 {

@@ -56,8 +56,11 @@ void BusinessObjectBase::AddColumn(BusinessColumnBase *column)
 {
 	_columns.push_back(column);
 }
-void BusinessObjectBase::AddPrimaryKey(PrimaryKey *primary_key)
+void BusinessObjectBase::AddPrimaryKey(std::unique_ptr<PrimaryKey> &&primary_key)
 {
-	_primary_keys.push_back(std::unique_ptr<PrimaryKey>(primary_key));
+	_primary_keys.push_back(std::move(primary_key));
 }
-
+void BusinessObjectBase::AddForeignKey(std::unique_ptr<ForeignKey>&& foreign_key)
+{
+	_foreign_keys.push_back(std::move(foreign_key));
+}
