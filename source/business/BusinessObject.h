@@ -129,7 +129,7 @@ class KeyBase
 protected:
 	BusinessObjectBase *_obj;
 	std::string _key_name;
-	Columns  _columns;
+	
 
 	virtual std::string SqlCreatePart() { return std::string(); }
 
@@ -148,6 +148,8 @@ class PrimaryKey : public KeyBase
 	friend class BusinessObjectBase;
 
 protected:
+	Columns  _columns;
+
 	std::string SqlCreatePart();
 	
 public:
@@ -165,7 +167,8 @@ class ForeignKey : public KeyBase
 	friend class BusinessObjectBase;
 
 protected:
-	Columns  _reference_columns;
+	typedef std::vector<std::pair<BusinessColumnBase*, BusinessColumnBase*>> ColumnsRelations;
+	ColumnsRelations  _column_relations;
 
 	std::string SqlCreatePart();
 
@@ -184,19 +187,6 @@ public:
 ************************************************************************/
 
 
-class KeyBuilderBase
-{
-protected:
-	Columns  _columns;
-
-public:
-	KeyBuilderBase();
-
-	void AddColumn(BusinessColumnBase * column);
-
-	virtual void Build(BusinessObjectBase *obj) = 0;
-	virtual void Build(BusinessObjectBase *obj, std::string name) = 0;
-};
 
 /************************************************************************
 *			PrimaryKeyBuilder - PrimaryKeyConstraint
@@ -213,13 +203,18 @@ void PrimaryKeyConstraint(BusinessObjectBase *obj,
 
 /*******************************************************************/
 
-class PrimaryKeyBuilder : public KeyBuilderBase
+class PrimaryKeyBuilder
 {
 	friend class PrimaryKey;
 	friend class BusinessObjectBase;
 	
+protected:
+	Columns  _columns;
+
 public:
 	PrimaryKeyBuilder();
+
+	void AddColumn(BusinessColumnBase * column);
 
 	void Build(BusinessObjectBase *obj);
 	void Build(BusinessObjectBase *obj, std::string name);
@@ -229,21 +224,29 @@ public:
 *			ForeignKeyBuilder - ForeignKeyConstraint
 ************************************************************************/
 
-/*void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column);
-void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &column, std::string name);
+void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &columnKey, BusinessColumnBase &columnReference);
+void ForeignKeyConstraint(BusinessObjectBase *obj, BusinessColumnBase &columnKey, BusinessColumnBase &columnReference, std::string name);
 void ForeignKeyConstraint(BusinessObjectBase *obj,
-	BusinessColumnBase &column1, BusinessColumnBase &column2);
+	BusinessColumnBase &columnKey1, BusinessColumnBase &columnReference1,
+	BusinessColumnBase &columnKey2, BusinessColumnBase &columnReference2);
 void ForeignKeyConstraint(BusinessObjectBase *obj,
-	BusinessColumnBase &column1, BusinessColumnBase &column2,
-	std::string name);*/
+	BusinessColumnBase &columnKey1, BusinessColumnBase &columnReference1,
+	BusinessColumnBase &columnKey2, BusinessColumnBase &columnReference2,
+	std::string name);
 
-class ForeignKeyBuilder : public KeyBuilderBase
+class ForeignKeyBuilder
 {
 	friend class ForeignKey;
 	friend class BusinessObjectBase;
 
+protected:
+	typedef std::vector<std::pair<BusinessColumnBase*, BusinessColumnBase*>> ColumnsRelations;
+	ColumnsRelations  _column_relations;
+
 public:
 	ForeignKeyBuilder();
+
+	void AddRelation(BusinessColumnBase * columnKey, BusinessColumnBase * columnReference);
 
 	void Build(BusinessObjectBase *obj);
 	void Build(BusinessObjectBase *obj, std::string name);

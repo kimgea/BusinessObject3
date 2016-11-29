@@ -10,6 +10,7 @@ User::User()
 
 	PrimaryKeyConstraint(this, UserName, _tableName + "_PK1");
 	PrimaryKeyConstraint(this, FirstName, LastName, _tableName + "_PK1");
-
-	//ForeignKeyConstraint(this, BirthPlace, _tableName + "_FK1");
+	
+	// Hmm... look for a better way to get reference table and column.	
+	ForeignKeyConstraint(this, BirthPlace, place.PlaceName, _tableName + "_FK1");
 }

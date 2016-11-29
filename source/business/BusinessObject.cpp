@@ -39,6 +39,13 @@ std::string BusinessObjectBase::Create()
 		sql += (*itr)->SqlCreatePart() + ",\n";		// TODO: nead to find out the speed of this
 	}
 
+	sql += "\n";
+
+	for (auto itr = _foreign_keys.begin(); itr != _foreign_keys.end(); itr++)
+	{
+		sql += (*itr)->SqlCreatePart() + ",\n";		// TODO: nead to find out the speed of this
+	}
+
 	// TODO: add other requirements and stuff'
 
 	sql.pop_back();
