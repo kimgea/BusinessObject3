@@ -37,6 +37,7 @@ class BusinessObjectBase
 	friend class PrimaryKeyBuilder;
 	friend class ForeignKeyBuilder;
 	friend class BusinessColumnBase;
+	friend class ForeignKey;
 	
 private:
 	Columns _columns;
@@ -108,7 +109,13 @@ public:
 	virtual std::string ToString() const;	
 
 	// Need to input values from fk columns from this table into the related columns in the refference table. Probasbly never going to do it.
-	BusinessObjectBase * FK();
+	template<class TABLE, class COLUMN>
+	TABLE * FK()
+	{
+		if (_foreignKey == nullptr)
+			return nullptr;
+		return _foreignKey->RelatedTable<TABLE, COLUMN>();
+	}
 	
 	std::string ColumnName();
 
@@ -182,7 +189,13 @@ protected:
 public:
 	ForeignKey() {}
 
-	BusinessObjectBase * RelatedTable();
+	template<class TABLE, class COLUMN>
+	TABLE * RelatedTable()
+	{
+		for (auto itr = _column_relations.begin(); itr != _column_relations.end(); itr++)
+			dynamic_cast<COLUMN*>(itr->second)->_value = dynamic_cast<COLUMN*>(itr->first)->_value;		// Not working as intyended as is, ofcourse.
+		return static_cast<TABLE*>(_column_relations.front().second->_obj);
+	}
 };
 
 /************************************************************************

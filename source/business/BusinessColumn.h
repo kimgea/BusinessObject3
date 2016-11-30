@@ -10,6 +10,7 @@
 template<class VALUE>
 class BusinessColumnTypeBase : public BusinessColumnBase
 {
+	friend class ForeignKey;
 protected:
 
 	VALUE _default;
@@ -30,7 +31,7 @@ public:
 
 	
 	
-	/*BusinessColumnTypeBase<VALUE>& operator=(const BusinessColumnTypeBase<VALUE> &rhs)
+	BusinessColumnTypeBase<VALUE>& operator=(const BusinessColumnTypeBase<VALUE> &rhs)
 	{
 		if (this != &rhs)
 		{			
@@ -38,7 +39,8 @@ public:
 		}
 
 		return *this;
-	}*/
+	}
+	
 	BusinessColumnTypeBase<VALUE>& operator=(const VALUE &value)
 	{
 		_hasValue = true;

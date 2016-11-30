@@ -18,5 +18,6 @@ User::User()
 
 Place * User::BirthPlaceFK()
 {
-	return static_cast<Place*>(BirthPlace.FK());
+	// A perfect solution should try to remove the templates, they should happend in the background without the user neading to use it.
+	return BirthPlace.FK<Place, CharColumn>();	// Currently FK and reference column must be of the same column type
 }

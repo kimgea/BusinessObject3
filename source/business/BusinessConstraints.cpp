@@ -50,10 +50,10 @@ std::string ForeignKey::SqlCreatePart()
 	bool is_one = (_column_relations.size() == 1);
 
 	if (!has_name && is_one)
-		return "FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + "TEMP" + "(" + _column_relations.front().second->ColumnName() + ")";
+		return "FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + _column_relations.front().second->_obj->_tableName + "(" + _column_relations.front().second->ColumnName() + ")";
 
 	else if (has_name && is_one)
-		return "CONSTRAINT " + _key_name + " FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + "TEMP" + "(" + _column_relations.front().second->ColumnName() + ")";
+		return "CONSTRAINT " + _key_name + " FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + _column_relations.front().second->_obj->_tableName + "(" + _column_relations.front().second->ColumnName() + ")";
 	return "";
 	/*std::string primary_columns = _columns.front()->ColumnName() + ",";
 	for (ColumnItr itr = ++_columns.begin(); itr != _columns.end(); itr++)
@@ -64,12 +64,7 @@ std::string ForeignKey::SqlCreatePart()
 	return "CONSTRAINT " + _key_name + " PRIMARY KEY (" + primary_columns + ")";*/
 }
 
-BusinessObjectBase * ForeignKey::RelatedTable()
-{
-	//for (auto itr = _column_relations.begin(); itr != _column_relations.end(); itr++)
-	//	itr->second = itr->first;		// Not working as intyended as is, ofcourse.
-	return _column_relations.front().second->_obj;
-}
+
 
 
 /************************************************************************

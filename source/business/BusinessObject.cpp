@@ -71,10 +71,3 @@ void BusinessObjectBase::AddForeignKey(std::unique_ptr<ForeignKey>&& foreign_key
 {
 	_foreign_keys.push_back(std::move(foreign_key));
 }
-
-BusinessObjectBase * BusinessColumnBase::FK()
-{
-	if (_foreignKey == nullptr)
-		return nullptr;
-	return _foreignKey->RelatedTable();
-}
