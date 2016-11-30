@@ -54,7 +54,7 @@ std::string ForeignKey::SqlCreatePart()
 
 	else if (has_name && is_one)
 		return "CONSTRAINT " + _key_name + " FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + "TEMP" + "(" + _column_relations.front().second->ColumnName() + ")";
-
+	return "";
 	/*std::string primary_columns = _columns.front()->ColumnName() + ",";
 	for (ColumnItr itr = ++_columns.begin(); itr != _columns.end(); itr++)
 	{
@@ -64,7 +64,12 @@ std::string ForeignKey::SqlCreatePart()
 	return "CONSTRAINT " + _key_name + " PRIMARY KEY (" + primary_columns + ")";*/
 }
 
-
+BusinessObjectBase * ForeignKey::RelatedTable()
+{
+	//for (auto itr = _column_relations.begin(); itr != _column_relations.end(); itr++)
+	//	itr->second = itr->first;		// Not working as intyended as is, ofcourse.
+	return _column_relations.front().second->_obj;
+}
 
 
 /************************************************************************
@@ -202,6 +207,8 @@ void ForeignKeyBuilder::Build(BusinessObjectBase *obj, std::string name)
 	pk->_key_name = name;
 	pk->_obj = obj;
 	pk->_column_relations = _column_relations;
+	for (auto itr = pk->_column_relations.begin(); itr != pk->_column_relations.end(); itr++)
+		itr->first->_foreignKey = pk.get();
 	obj->AddForeignKey(std::move(pk));	// Must be friend
 	_column_relations.clear();
 }

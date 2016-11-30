@@ -33,13 +33,8 @@ public:
 	/*BusinessColumnTypeBase<VALUE>& operator=(const BusinessColumnTypeBase<VALUE> &rhs)
 	{
 		if (this != &rhs)
-		{
-			_hasValue = rhs._hasValue;
-			_notNull = rhs._notNull;
-			_default = rhs._default;
+		{			
 			_value = rhs._value;
-			_obj = rhs._obj;
-			_columnName = rhs._columnName;
 		}
 
 		return *this;

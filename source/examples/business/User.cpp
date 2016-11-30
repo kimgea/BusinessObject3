@@ -14,3 +14,9 @@ User::User()
 	// Hmm... look for a better way to get reference table and column.	
 	ForeignKeyConstraint(this, BirthPlace, place.PlaceName, _tableName + "_FK1");
 }
+
+
+Place * User::BirthPlaceFK()
+{
+	return static_cast<Place*>(BirthPlace.FK());
+}

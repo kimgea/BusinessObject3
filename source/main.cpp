@@ -33,4 +33,7 @@ int main()
 	std::string fullName2 = person2.FullName();
 	std::string sql2 = person2.Create();
 
+	person.BirthPlace = "Earth";
+	Place *place = person.BirthPlaceFK(); // place should idealy get filled with the correct fk values. Skipping this as current structur dos not easely supprt it.
+
 }

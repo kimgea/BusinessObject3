@@ -14,8 +14,9 @@ protected:
 public:	
 
 	CharColumn UserName;
-
 	CharColumn BirthPlace;
+
+	Place* BirthPlaceFK();
 
 	User();
 };
