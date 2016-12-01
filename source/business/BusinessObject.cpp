@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "BusinessObject.h"
+#include "BusinessColumn.h"
+
 
 BusinessObjectBase::BusinessObjectBase()
 {
@@ -91,7 +93,20 @@ std::string BusinessObjectBase::Insert()
 
 std::string BusinessObjectBase::Read()
 {
-	return std::string();
+	std::string sql_where = "";
+
+	for (auto itr = _columns.begin(); itr != _columns.end(); itr++)
+	{
+		if (!(*itr)->HasValue())
+			continue;
+		sql_where += (*itr)->ColumnName() + " = " + (*itr)->ToSqlString();
+		if (itr != --_columns.end())
+			sql_where += " AND ";
+	}
+	if (sql_where.size() == 0)
+		return "";
+
+	return "SELECT * FROM " + _tableName + " WHERE " + sql_where;
 }
 
 void BusinessObjectBase::AddColumn(BusinessColumnBase *column)
@@ -105,4 +120,9 @@ void BusinessObjectBase::AddPrimaryKey(std::unique_ptr<PrimaryKey> &&primary_key
 void BusinessObjectBase::AddForeignKey(std::unique_ptr<ForeignKey>&& foreign_key)
 {
 	_foreign_keys.push_back(std::move(foreign_key));
+}
+
+std::string BusinessObjectBase::TableName()
+{
+	return _tableName;
 }

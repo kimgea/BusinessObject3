@@ -3,6 +3,7 @@
 //#include "AbstractPerson.h"
 #include "user.h"
 
+#include "BusinessQuery.h"
 
 
 
@@ -28,6 +29,10 @@ int main()
 	std::string fullName = person.FullName();
 	std::string sql = person.Create();
 
+	// Select dos not support picking which fields to select. Will not be added
+	// But could be added like current version. person.FirstName.Select()
+	std::string ReadSql = person.Read();	
+
 	cout << "CREATE SQL" << std::endl;
 	cout << sql << std::endl << std::endl << std::endl;
 
@@ -41,5 +46,16 @@ int main()
 	person.BirthPlace = "Earth";
 	Place *place = person.BirthPlaceFK(); // place should idealy get filled with the correct fk values. Skipping this as current structur dos not easely supprt it.
 	Place *place2 = person.BirthPlace.FK<Place, CharColumn>();	// Template should be hiddewn shome how... but probablyt not going to bother with it.
-	//std::string insterPlaceSQL = place2->Insert();
+	std::string ReadPlaceSQL = place2->Read();
+
+
+	/////
+
+	std::string squery1 = QueryFunc(person).All();
+	std::string squery2 = QueryFunc(person).First();
+
+	std::string squery3 = QueryFunc(person).Filter( 
+		person.LastName == "Aase" && person.FirstName == "Kim").All();
+	
+
 }

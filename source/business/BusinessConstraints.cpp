@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BusinessObject.h"
-
+#include "BusinessColumn.h"
+#include "BusinessConstraints.h"
 
 
 /************************************************************************
@@ -65,6 +66,7 @@ std::string ForeignKey::SqlCreatePart()
 	else if (has_name && is_one)
 		return "CONSTRAINT " + _key_name + " FOREIGN KEY (" + _column_relations.front().first->ColumnName() + ") REFERENCES " + _column_relations.front().second->_obj->_tableName + "(" + _column_relations.front().second->ColumnName() + ")";
 	return "";
+	// TODO: add output for coumpound sql... is suported else where.
 	/*std::string primary_columns = _columns.front()->ColumnName() + ",";
 	for (ColumnItr itr = ++_columns.begin(); itr != _columns.end(); itr++)
 	{

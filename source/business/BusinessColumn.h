@@ -3,7 +3,56 @@
 #include <memory>
 
 #include "BusinessObject.h"
+#include "BusinessConstraints.h"
 
+
+class ForeignKey;
+class PrimaryKey;
+class PrimaryKeyBuilder;
+class ForeignKeyBuilder;
+class BusinessColumnBase;
+
+
+class BusinessColumnBase
+{
+	friend class BusinessObjectBase;
+	friend class ForeignKeyBuilder;
+	friend class ForeignKey;
+
+protected:
+	BusinessObjectBase *_obj;
+	std::string _columnName;
+	bool _notNull;
+	bool _hasValue;
+
+	ForeignKey * _foreignKey;
+
+	void Init(BusinessObjectBase *obj, std::string columnName);
+
+	virtual std::string SqlCreatePart();
+
+public:
+	BusinessColumnBase();
+
+	virtual std::string ToString() const;
+	virtual std::string ToSqlString() const;
+
+	// Need to input values from fk columns from this table into the related columns in the refference table. Probasbly never going to do it.
+	template<class TABLE, class COLUMN>
+	TABLE * FK()
+	{
+		if (_foreignKey == nullptr)
+			return nullptr;
+		return _foreignKey->RelatedTable<TABLE, COLUMN>();
+	}
+
+	std::string ColumnName();
+
+	operator std::string() const;
+
+	bool HasValue();
+
+};
 
 
 
@@ -48,6 +97,7 @@ public:
 		_value = value;
 		return *this;
 	}
+
 
 	friend VALUE operator+(
 		const BusinessColumnTypeBase<VALUE>& lhs,

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "BusinessObject.h"
-
+#include "BusinessColumn.h"
+#include "BusinessQuery.h"
 
 BusinessColumnBase::BusinessColumnBase()
 {
@@ -41,3 +41,4 @@ std::string BusinessColumnBase::ColumnName()
 {
 	return _columnName;
 }
+
