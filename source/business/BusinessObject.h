@@ -61,8 +61,9 @@ public:
 	std::string Create();
 	std::string Drop();
 	
-	/*std::string Insert();
-	std::string Update();
+	std::string Read();
+	std::string Insert();
+	/*std::string Update();
 	std::string Save();*/
 
 
@@ -107,6 +108,7 @@ public:
 	BusinessColumnBase();		
 
 	virtual std::string ToString() const;	
+	virtual std::string ToSqlString() const;
 
 	// Need to input values from fk columns from this table into the related columns in the refference table. Probasbly never going to do it.
 	template<class TABLE, class COLUMN>
@@ -168,6 +170,8 @@ protected:
 	
 public:
 	PrimaryKey() {}	
+
+	bool HasValues();
 };
 
 
@@ -193,7 +197,11 @@ public:
 	TABLE * RelatedTable()
 	{
 		for (auto itr = _column_relations.begin(); itr != _column_relations.end(); itr++)
-			dynamic_cast<COLUMN*>(itr->second)->_value = dynamic_cast<COLUMN*>(itr->first)->_value;		// Not working as intyended as is, ofcourse.
+		{
+			COLUMN *c1 = dynamic_cast<COLUMN*>(itr->second);
+			COLUMN *c2 = dynamic_cast<COLUMN*>(itr->first);
+			*c1 = *c2;
+		}
 		return static_cast<TABLE*>(_column_relations.front().second->_obj);
 	}
 };

@@ -18,7 +18,10 @@ std::string BusinessColumnBase::ToString() const
 {
 	return "";
 }
-
+std::string BusinessColumnBase::ToSqlString() const
+{
+	return "";
+}
 std::string BusinessColumnBase::SqlCreatePart()
 {
 	return std::string();

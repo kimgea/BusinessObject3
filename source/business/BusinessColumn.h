@@ -36,6 +36,7 @@ public:
 		if (this != &rhs)
 		{			
 			_value = rhs._value;
+			_hasValue = rhs._hasValue;
 		}
 
 		return *this;

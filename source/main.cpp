@@ -28,7 +28,12 @@ int main()
 	std::string fullName = person.FullName();
 	std::string sql = person.Create();
 
-	cout << sql << std::endl;
+	cout << "CREATE SQL" << std::endl;
+	cout << sql << std::endl << std::endl << std::endl;
+
+	person.Password = "";
+	cout << "INSERT SQL" << std::endl;
+	cout << person.Insert() << std::endl << std::endl << std::endl;
 	
 	std::string fullName2 = person2.FullName();
 	std::string sql2 = person2.Create();
@@ -36,4 +41,5 @@ int main()
 	person.BirthPlace = "Earth";
 	Place *place = person.BirthPlaceFK(); // place should idealy get filled with the correct fk values. Skipping this as current structur dos not easely supprt it.
 	Place *place2 = person.BirthPlace.FK<Place, CharColumn>();	// Template should be hiddewn shome how... but probablyt not going to bother with it.
+	//std::string insterPlaceSQL = place2->Insert();
 }

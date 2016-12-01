@@ -33,7 +33,7 @@ public:
 	unsigned int GetMaxSize();
 
 	std::string ToString() const;
-
+	virtual std::string ToSqlString() const;
 
 	
 	friend void  CharColumnMake(BusinessObjectBase *obj, CharColumn &column, std::string columnName, unsigned int MaxSize);

@@ -64,6 +64,11 @@ std::string CharColumn::ToString() const
 	return "";*/
 }
 
+std::string CharColumn::ToSqlString() const
+{
+	return "'" + _value + "'";
+}
+
 
 /**************************************************************
 *

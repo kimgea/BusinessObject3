@@ -59,6 +59,41 @@ std::string BusinessObjectBase::Drop()
 	return "DROP TABLE " + _tableName;
 }
 
+std::string BusinessObjectBase::Insert()
+{
+	// Check keys
+	for (auto itr = _primary_keys.begin(); itr != _primary_keys.end(); itr++)
+	{
+		if (!(*itr)->HasValues())	// TODO: ignore autoincrement columns... those will not be made
+			throw("PK required to have values");
+	}
+	std::string column_names = "";
+	std::string column_values = "";
+
+	for (auto itr = _columns.begin(); itr != _columns.end(); itr++)
+	{
+		if (!(*itr)->HasValue())
+			continue;
+		column_names += (*itr)->ColumnName() + ", ";
+		column_values += (*itr)->ToSqlString() + ", ";
+	}
+	if (column_names.size() == 0)
+		return "";
+
+	column_names.pop_back();
+	column_values.pop_back();
+
+	std::string  sql = "INSERT INTO " + _tableName + " (" + column_names + ")\n";
+	sql += "VALUES (" + column_values + ")";
+	
+	return sql;
+}
+
+std::string BusinessObjectBase::Read()
+{
+	return std::string();
+}
+
 void BusinessObjectBase::AddColumn(BusinessColumnBase *column)
 {
 	_columns.push_back(column);

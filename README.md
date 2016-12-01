@@ -8,6 +8,7 @@ What it is:
 - A prototype mokup that i not suposed to be used
 - Focus is to show an ewxample on how it should work for the end user. The exammple folder. Creeating mapping classes, ...
 - Generating some SQL for those few functionalities thath will be added
+- A big messy tightly coupeled Gordian knot
 
 What it is not:
 - Dos not access db

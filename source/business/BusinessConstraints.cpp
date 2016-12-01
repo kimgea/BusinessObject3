@@ -38,6 +38,16 @@ std::string PrimaryKey::SqlCreatePart()
 	return "CONSTRAINT " + _key_name + " PRIMARY KEY (" + primary_columns + ")";
 }
 
+bool PrimaryKey::HasValues()
+{
+	for (ColumnItr itr = ++_columns.begin(); itr != _columns.end(); itr++)
+	{
+		if (!(*itr)->HasValue())
+			return false;
+	}
+	return true;
+}
+
 
 
 /************************************************************************
